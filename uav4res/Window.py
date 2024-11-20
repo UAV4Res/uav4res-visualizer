@@ -36,7 +36,7 @@ class Window:
             texture = pygame.transform.rotate(texture, rotation)
         self.screen.blit(texture, position)
 
-    def draw_box_with_radius(self, color, rect, radius, border=0, border_color=None):
+    def draw_box_with_radius(self, color, rect, radius, border=0, border_color="black"):
         """
         Draw a box with rounded corners.
 

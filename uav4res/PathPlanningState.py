@@ -4,21 +4,40 @@ from GameStateManager import GameStateManager
 from InputManager import InputManager
 from TextManager import TextManager
 from Button import Button
+from path_planning_visualizer import main
 
 
 class PathPlanningState(GameState):
     def __init__(self):
         self.buttons = []
-        button = Button(x=250, y=250, width=200, height=100)
-        button.set_title("Path planning")
-        from PlayState import PlayState
 
-        button.on_click(lambda: GameStateManager().switch_state(PlayState()))
-        self.buttons.append(button)
-
-        button = Button(x=250, y=450, width=200, height=100)
-        button.set_title("Back")
-        button.on_click(lambda: GameStateManager().pop_state())
+        button = Button(x=280, y=300, width=200, height=100)
+        button.set_title("Run Visualizer")
+        button.set_font_size(30)
+        button.set_border(2)
+        button.on_click(
+            lambda: main.run(
+                image_link="map1.jpeg",
+                victim_position=[
+                    (44, 468),
+                    (108, 14),
+                    (631, 459),
+                    (62, 198),
+                    (369, 185),
+                ],
+                fatals=[7, 5, 9, 5, 1],
+                victim_needs=[2, 4, 5, 3, 1],
+                rescue_position=[
+                    (212, 456),
+                    (151, 31),
+                    (243, 252),
+                    (99, 209),
+                    (637, 263),
+                ],
+                rescue_resources=[5, 2, 3, 4, 1],
+                assembly_area=[400, 20],
+            )
+        )
         self.buttons.append(button)
 
     def update(self):
@@ -36,11 +55,12 @@ class PathPlanningState(GameState):
 
         Game().window.fill("white")
         TextManager().print(
-            text="Path Planning",
+            text="UAV4Res: Path Planning",
             position=(Game().getWindow().width / 2, 100),
             color="black",
             font_size=50,
         )
+
         for button in self.buttons:
             button.draw()
 

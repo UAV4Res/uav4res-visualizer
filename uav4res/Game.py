@@ -10,10 +10,17 @@ from TextureManager import TextureManager
 @Singleton
 class Game:
     def __init__(self):
+        pygame.init()
         self.isRunning = True
-        self.FPS = 60
+        self.FPS = 120
         self.window = Window(768, 700, 60)
         GameStateManager().push_state(MenuState())
+        self.loadTexture()
+
+    def loadTexture(self):
+        TextureManager().load_texture("boat", "boat.png")
+        TextureManager().load_texture("map1", "map1.jpeg")
+        TextureManager().load_texture("uet_logo", "uet_logo.png")
 
     def update(self):
         GameStateManager().update()

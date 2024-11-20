@@ -21,12 +21,14 @@ class Button:
         self.rectangle = Rectangle(x, y, width, height)
         self.callback: Optional[Callable[[], None]] = None
         self.is_disabled = False
+        self.border = 0
         self.border_radius = 15
         self.font_color = font_color  # Black
         self.normal_color = normal_color  # White
         self.hovered_color = hovered_color  # Gray
         self.disabled_color = disable_color  # Gray
         self.title = ""
+        self.font_size = 24
         self.texture_id = ""
         self.is_hovered = False
         self.is_clicked = False
@@ -62,6 +64,7 @@ class Button:
                 self.rectangle.h(),
             ),
             radius=self.border_radius,
+            border=self.border,
         )
 
         if self.background_texture_id:
@@ -78,6 +81,7 @@ class Button:
                 self.rectangle.y() + self.rectangle.h() // 2,
             ),
             color=self.font_color,
+            font_size=self.font_size,
         )
 
     def update(self):
@@ -94,8 +98,14 @@ class Button:
             if self.callback:
                 self.callback()
 
+    def set_border(self, border: int):
+        self.border = border
+
     def set_title(self, title):
         self.title = title
+
+    def set_font_size(self, font_size: int):
+        self.font_size = font_size
 
     def on_click(self, callback: Callable[[], None]):
         self.callback = callback
@@ -108,9 +118,6 @@ class Button:
 
     def set_texture(self, texture_id):
         self.texture_id = texture_id
-
-    def set_border_radius(self, border_radius):
-        self.border_radius = border_radius
 
     def set_border_radius(self, border_radius):
         self.border_radius = border_radius
