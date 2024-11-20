@@ -19,22 +19,22 @@ class PathPlanningState(GameState):
             lambda: main.run(
                 image_link="map1.jpeg",
                 victim_position=[
-                    (44, 468),
-                    (108, 14),
-                    (631, 459),
-                    (62, 198),
-                    (369, 185),
+                    [205, 138],
+                    [420, 369],
+                    [389, 143],
+                    [513, 126],
+                    [244, 407],
                 ],
-                fatals=[7, 5, 9, 5, 1],
-                victim_needs=[2, 4, 5, 3, 1],
+                fatals=[2, 3, 4, 1, 5],
+                victim_needs=[2, 2, 2, 1, 2],
                 rescue_position=[
-                    (212, 456),
-                    (151, 31),
-                    (243, 252),
-                    (99, 209),
-                    (637, 263),
+                    [382, 371],
+                    [307,  21],
+                    [372, 401],
+                    [ 67,  69],
+                    [412, 111]
                 ],
-                rescue_resources=[5, 2, 3, 4, 1],
+                rescue_resources=[9, 4, 5, 3, 7],
                 assembly_area=[400, 20],
             )
         )
