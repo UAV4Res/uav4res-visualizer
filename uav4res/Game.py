@@ -21,6 +21,7 @@ class Game:
         TextureManager().load_texture("boat", "boat.png")
         TextureManager().load_texture("map1", "map1.jpeg")
         TextureManager().load_texture("uet_logo", "uet_logo.png")
+        TextureManager().load_texture("arrow", "arrow.png")
 
     def update(self):
         GameStateManager().update()

@@ -86,6 +86,19 @@ class MapBuildingState(GameState):
             font_size=50,
         )
 
+        TextureManager().draw_texture(
+            name="arrow",
+            position=(310, 240),
+            scale=(180, 120),
+        )
+
+        TextManager().print(
+            text="Segmentation",
+            position=(Game().getWindow().width / 2, 280),
+            color="black",
+            font_size=20,
+        )
+
         # Render buttons
         for button in self.buttons:
             button.draw()
@@ -96,7 +109,7 @@ class MapBuildingState(GameState):
                 cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
             )
             Game().getWindow().draw_image(
-                texture=original_surface, position=(120, 200), scale=(200, 200)
+                texture=original_surface, position=(100, 200), scale=(200, 200), rotation=-90
             )  # Adjust position as needed
 
         # Render processed map if available
@@ -105,7 +118,7 @@ class MapBuildingState(GameState):
                 cv2.cvtColor(self.result_image, cv2.COLOR_GRAY2RGB)
             )
             Game().getWindow().draw_image(
-                texture=result_surface, position=(420, 200), scale=(200, 200)
+                texture=result_surface, position=(500, 200), scale=(200, 200), rotation=-90
             )  # Adjust position as needed
 
     def clean(self):

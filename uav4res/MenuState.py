@@ -8,22 +8,13 @@ from Button import Button
 class MenuState(GameState):
     def __init__(self):
         self.buttons = []
+        from MapBuildingState import MapBuildingState
 
-        button = Button(x=270, y=250, width=200, height=75)
+        button = Button(x=230, y=300, width=300, height=100)
         button.set_title("Start Demo")
         button.set_border(2)
-        button.set_font_size(30)
+        button.set_font_size(40)
         button.on_click(lambda: GameStateManager().push_state(MapBuildingState()))
-        self.buttons.append(button)
-
-        button = Button(x=270, y=350, width=200, height=75)
-        button.set_title("Info")
-        button.set_border(2)
-        button.set_font_size(30)
-        from MapBuildingState import MapBuildingState
-        from InfoState import InfoState
-
-        button.on_click(lambda: GameStateManager().push_state(InfoState()))
         self.buttons.append(button)
 
     def update(self):
@@ -39,15 +30,15 @@ class MenuState(GameState):
         Game().getWindow().fill("white")
         TextManager().print(
             text="Fluffy (UET-VNU): UAV4Res",
-            position=(50 + Game().getWindow().width / 2, 80),
+            position=(50 + Game().getWindow().width / 2, 180),
             color="black",
             font_size=50,
         )
 
         TextureManager().draw_texture(
             name="uet_logo",
-            position=(40, 30),
-            scale=(100, 100),
+            position=(50, 130),
+            scale=(120, 120),
         )
 
         for button in self.buttons:
