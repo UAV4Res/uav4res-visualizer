@@ -379,14 +379,5 @@ def run(image_link, victim_position, fatals, victim_needs, rescue_position, resc
             assembly_area: Position of the area which the rescue team must bring to when there are no space left in the boat: 1d list, shape (position)
     """
     queue = Queue()
-    main_loop_thread = Process(target=main_loop, args=(queue, image_link, victim_position, fatals, victim_needs, rescue_position, rescue_resources, [assembly_area]));
-    main_loop_thread.start()
-
-if __name__ == '__main__':
-    # fatals = [7, 5, 9, 5, 1]
-    # rescue_resources = [5, 2, 3, 4, 1]
-    # victim_needs = [2, 4, 5, 3, 1]
-    # is_running_algo = False
-    run("test.jpg", [[20, 20], [60, 60]], [7, 1], [4, 6], [[100, 50], [400, 400]], [2, 2], [400, 20])
-    #run("test.jpg", [], [7, 5, 9], [2, 4, 5], [], [5, 2], [505, 20])
+    main_loop(queue, image_link, victim_position, fatals, victim_needs, rescue_position, rescue_resources, [assembly_area])
 
