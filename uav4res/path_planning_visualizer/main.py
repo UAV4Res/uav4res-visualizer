@@ -29,9 +29,11 @@ WIDTH, HEIGHT = 640, 480
 # rescue_resources = [5]
 # victim_needs = [4]
 
+scale = 1.5
+
 class Gui():
     def __init__(self, image_link, victim_position, fatals, victim_needs, rescue_position, rescue_resources, assembly_area):
-        self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode((WIDTH * scale, HEIGHT * scale))
         pygame.display.set_caption("Visualize");
         self.font = pygame.font.Font('freesansbold.ttf', 10)
 
@@ -86,32 +88,32 @@ class Gui():
         for path in self.paths:
             if path is not None:
                 for cell in path:
-                    self.draw_box([cell[0], cell[1]], colour = (255, 0, 255), thickness = 2)
+                    self.draw_box([cell[0] * scale, cell[1] * scale], colour = (255, 0, 255), thickness = 2)
         for path in self.return_res_paths:
             if path is not None:
                 for cell in path:
-                    self.draw_box([cell[0], cell[1]], colour = (255, 0, 255), thickness = 2)
+                    self.draw_box([cell[0] * scale, cell[1] * scale], colour = (255, 0, 255), thickness = 2)
 
     def draw_res_vic(self):
-        self.draw_box([self.assembly_area[0][0], self.assembly_area[0][1]], colour = (255, 0, 0), thickness = 5)
+        self.draw_box([self.assembly_area[0][0] * scale, self.assembly_area[0][1] * scale], colour = (255, 0, 0), thickness = 5)
         for index_single_vic, single_vic in enumerate(self.vic):
-            self.draw_box([single_vic[0], single_vic[1]], colour = (0, 0, 255), thickness = 5) 
-            self.draw_text([single_vic[0], single_vic[1]], f"fatals: {self.fatals[index_single_vic]}")
-            self.draw_text([single_vic[0], single_vic[1] + 10], f"victim needs: {self.victim_needs[index_single_vic]}")
+            self.draw_box([single_vic[0] * scale, single_vic[1] * scale], colour = (0, 0, 255), thickness = 5) 
+            self.draw_text([single_vic[0] * scale, single_vic[1] * scale], f"fatals: {self.fatals[index_single_vic]}")
+            self.draw_text([single_vic[0] * scale, (single_vic[1] + 10) * scale], f"victim needs: {self.victim_needs[index_single_vic]}")
         for index_single_res, single_res in enumerate(self.res):
-            self.draw_box([single_res[0], single_res[1]], colour = (0, 255, 0), thickness = 5)
-            self.draw_text([single_res[0], single_res[1]], f"rescue resources: {self.rescue_resources[index_single_res]}")
+            self.draw_box([single_res[0]* scale, single_res[1]* scale], colour = (0, 255, 0), thickness = 5)
+            self.draw_text([single_res[0]* scale, single_res[1]* scale], f"rescue resources: {self.rescue_resources[index_single_res]}")
         for index_single_return_res, single_return_res in enumerate(self.return_res):
-            self.draw_box([single_return_res[0], single_return_res[1]], colour = (0, 255, 0), thickness = 5)
+            self.draw_box([single_return_res[0]* scale, single_return_res[1]* scale], colour = (0, 255, 0), thickness = 5)
             
     def main(self, queue):
-        self.screen.blit(pygame.surfarray.make_surface(self.background), (0, 0))
+        self.screen.blit(pygame.surfarray.make_surface(cv2.resize(self.background, (int(HEIGHT * scale), int(WIDTH * scale)))), (0, 0))
         self.draw_paths()   
         self.draw_res_vic();
-        self.draw_text([5, 30], f'running time: {time.time() - self.running_time_start:.2f}', (255, 255, 255))
-        if self.stop_process == True:
+        self.draw_text([5* scale, 30* scale], f'running time: {time.time() - self.running_time_start:.2f}', (255, 255, 255))
+        if self.stop_process == True or self.stop_process_return == True:
             dot = (int(time.time() * 4) % 4) * '.'
-            self.draw_text([5, 40], f'calculating ' + dot, (255, 255, 255))
+            self.draw_text([5* scale, 40* scale], f'calculating ' + dot, (255, 255, 255))
         mouse_x, mouse_y = pygame.mouse.get_pos()
         if time.time() - self.start_time_window > self.time_window and self.stop_process == False and self.stop_process_return == False:
             self.time_unit = self.time_unit + 1;
@@ -382,11 +384,11 @@ def run(image_link, victim_position, fatals, victim_needs, rescue_position, resc
     main_loop_thread = Process(target=main_loop, args=(queue, image_link, victim_position, fatals, victim_needs, rescue_position, rescue_resources, [assembly_area]));
     main_loop_thread.start()
 
-if __name__ == '__main__':
+#if __name__ == '__main__':
     # fatals = [7, 5, 9, 5, 1]
     # rescue_resources = [5, 2, 3, 4, 1]
     # victim_needs = [2, 4, 5, 3, 1]
     # is_running_algo = False
-    run("test.jpg", [[20, 20], [60, 60]], [7, 1], [4, 6], [[100, 50], [400, 400]], [2, 2], [400, 20])
+    #run("test.jpg", [[20, 20], [60, 60]], [7, 1], [4, 6], [[100, 50], [400, 400]], [2, 2], [400, 20])
     #run("test.jpg", [], [7, 5, 9], [2, 4, 5], [], [5, 2], [505, 20])
 
