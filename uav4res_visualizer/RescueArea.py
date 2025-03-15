@@ -1,9 +1,8 @@
-from VisualizeObject import VisualizeObject
 from TextureManager import TextureManager
 from TextManager import TextManager
 
 
-class RescueArea(VisualizeObject):
+class RescueArea():
     def __init__(self, position,  number_of_victim: int, important_score: int):
         self.important_score = important_score
         self.position = position

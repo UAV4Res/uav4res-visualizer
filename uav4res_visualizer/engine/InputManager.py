@@ -1,6 +1,6 @@
 import pygame
-from Singleton import Singleton
-from Rectangle import Rectangle
+from .Singleton import Singleton
+from .Rectangle import Rectangle
 
 
 @Singleton
@@ -16,8 +16,6 @@ class InputManager:
         self.quit = False  # Quit flag
 
     def update(self):
-        from Game import Game
-
         # Reset transient state
         self.keys_down.clear()
         self.keys_up.clear()
@@ -27,7 +25,7 @@ class InputManager:
         for event in pygame.event.get():
             # Process events
             if event.type == pygame.QUIT:
-                Game().quit()
+                self.quit = True
             elif event.type == pygame.KEYDOWN:
                 self.keys_down.add(event.key)
                 self.keys_held.add(event.key)
@@ -68,3 +66,6 @@ class InputManager:
             rectangle.leftmost() <= mouse_x <= rectangle.rightmost()
             and rectangle.top() <= mouse_y <= rectangle.bottom()
         )
+
+    def is_quit(self):
+        return self.quit

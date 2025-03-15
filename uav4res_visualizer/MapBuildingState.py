@@ -1,18 +1,21 @@
 import pygame
 import cv2
+import os
 import numpy as np
-from GameState import GameState
-from GameStateManager import GameStateManager
-from InputManager import InputManager
-from TextManager import TextManager
-from Button import Button
-from TextureManager import TextureManager
+from .engine.GameState import GameState
+from .engine.GameStateManager import GameStateManager
+from .engine.InputManager import InputManager
+from .engine.TextManager import TextManager
+from .engine.Button import Button
+from .engine.TextureManager import TextureManager
+from .engine.Window import Window
+from .config import IMAGE_DIR
 
 
 class MapBuildingState(GameState):
     def __init__(self):
         self.image = cv2.imread(
-            "map1.jpeg"
+            os.path.join(IMAGE_DIR, "map1.jpeg")
         )  # Load the default image (replace with your map)
         self.result_image = None  # Will hold the processed map
         self.buttons = []
@@ -31,7 +34,7 @@ class MapBuildingState(GameState):
         path_planning_button.set_title("Path Planning")
         path_planning_button.disable()
         path_planning_button.set_border(2)
-        from PathPlanningState import PathPlanningState
+        from .PathPlanningState import PathPlanningState
 
         # Button: Process map (Next step)
         next_button = Button(x=300, y=500, width=150, height=60)
@@ -70,45 +73,46 @@ class MapBuildingState(GameState):
             button.update()
 
     def handle_events(self):
-        from PlayState import PlayState
+        from .PlayState import PlayState
 
         if InputManager().is_key_down(pygame.K_RETURN):
             GameStateManager().switch_state(PlayState())
 
-    def render(self):
-        from Game import Game
-
-        Game().window.fill("white")
+    def render(self, window: Window):
+        window.fill("white")
         TextManager().print(
+            window=window,
             text="UAV4Res: Map Building",
-            position=(Game().getWindow().width / 2, 100),
+            position=(window.width / 2, 100),
             color="black",
             font_size=50,
         )
 
         TextureManager().draw_texture(
+            window=window,
             name="arrow",
             position=(310, 240),
             scale=(180, 120),
         )
 
         TextManager().print(
+            window=window,
             text="Segmentation",
-            position=(Game().getWindow().width / 2, 280),
+            position=(window.width / 2, 280),
             color="black",
             font_size=20,
         )
 
         # Render buttons
         for button in self.buttons:
-            button.draw()
+            button.draw(window)
 
         # Render original image
         if self.image is not None:
             original_surface = pygame.surfarray.make_surface(
                 cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
             )
-            Game().getWindow().draw_image(
+            window.draw_image(
                 texture=original_surface, position=(100, 200), scale=(200, 200), rotation=-90
             )  # Adjust position as needed
 
@@ -117,7 +121,7 @@ class MapBuildingState(GameState):
             result_surface = pygame.surfarray.make_surface(
                 cv2.cvtColor(self.result_image, cv2.COLOR_GRAY2RGB)
             )
-            Game().getWindow().draw_image(
+            window.draw_image(
                 texture=result_surface, position=(500, 200), scale=(200, 200), rotation=-90
             )  # Adjust position as needed
 

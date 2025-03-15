@@ -1,26 +1,33 @@
 import pygame
-from Singleton import Singleton
+from .Singleton import Singleton
+from .Window import Window
 
 
 @Singleton
 class TextManager:
     def __init__(self):
         pygame.font.init()
+        self.font_cache = {}
+
+    def get_font(self, font_path, font_size):
+        """Retrieve a cached font or create a new one."""
+        font_key = (font_path, font_size)
+        if font_key not in self.font_cache:
+            self.font_cache[font_key] = pygame.font.Font(font_path, font_size)
+        return self.font_cache[font_key]
 
     def print(
         self,
-        text,
+        text: str,
         position,
+        window: Window,
         font_path=None,
         font_size=24,
         color=(255, 255, 255),
         max_width=None,
     ):
-        from Game import Game
-
         """
         Draw text on the screen, with optional line wrapping.
-
         Args:
             text (str): The text to display.
             position (tuple): (x, y) position to draw the text.
@@ -30,8 +37,8 @@ class TextManager:
             max_width (int): Maximum width for text wrapping (optional).
         """
         try:
-            font = pygame.font.Font(font_path, font_size)
-            # Split text into lines if max_width is provided
+            font = self.get_font(font_path, font_size)
+
             lines = []
             if max_width:
                 words = text.split(" ")
@@ -48,14 +55,17 @@ class TextManager:
             else:
                 lines = [text]
 
-            # Draw each line
+            # Pre-render all lines
+            rendered_lines = [font.render(line, True, color) for line in lines]
+
+            # Draw each line with adjusted position based on zoom
             y_offset = 0
-            for line in lines:
-                rendered_line = font.render(line, True, color)
+            total_text_height = sum(line.get_height() for line in rendered_lines)
+            for rendered_line in rendered_lines:
                 text_width, text_height = rendered_line.get_size()
                 x = position[0] - text_width // 2
-                y = position[1] + y_offset - (text_height * len(lines)) // 2
-                Game().getWindow().screen.blit(rendered_line, (x, y))
+                y = position[1] + y_offset - (total_text_height) // 2
+                window.screen.blit(rendered_line, (x, y))
                 y_offset += text_height
         except Exception as e:
             print(f"Error drawing font: {e}")

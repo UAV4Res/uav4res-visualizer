@@ -1,9 +1,8 @@
-from VisualizeObject import VisualizeObject
-from TextureManager import TextureManager
-from TextManager import TextManager
+from .engine.TextureManager import TextureManager
+from .engine.TextManager import TextManager
 
 
-class RescueTeam(VisualizeObject):
+class RescueTeam:
     def __init__(self, position, number_of_seats: int):
         self.position = position
         self.number_of_seats = number_of_seats

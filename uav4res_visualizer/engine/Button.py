@@ -1,9 +1,10 @@
 import pygame
 from typing import Callable, Optional
-from Rectangle import Rectangle
-from InputManager import InputManager
-from TextManager import TextManager
-from TextureManager import TextureManager
+from .Rectangle import Rectangle
+from .InputManager import InputManager
+from .TextManager import TextManager
+from .TextureManager import TextureManager
+from .Window import Window 
 
 
 class Button:
@@ -43,8 +44,7 @@ class Button:
     def setBackgroundImage(self, texture_id: str):
         self.background_texture_id = texture_id
 
-    def draw(self):
-        # Determine the button color
+    def draw(self, window: Window):
         if self.is_disabled:
             color = self.disabled_color
         elif self.is_hovered:
@@ -52,10 +52,7 @@ class Button:
         else:
             color = self.normal_color
 
-        # Draw the button box
-        from Game import Game
-
-        Game().getWindow().draw_box_with_radius(
+        window.draw_box_with_radius(
             color=color,
             rect=pygame.Rect(
                 self.rectangle.x(),
@@ -75,6 +72,7 @@ class Button:
             )
 
         TextManager().print(
+            window = window,
             text=self.title,
             position=(
                 self.rectangle.x() + self.rectangle.w() // 2,

@@ -1,8 +1,8 @@
-from Game import Game
+from .Game import Game
 
 
 def main():
-    game = Game()
+    game = Game(width=768, height=700, fps=120)
     while game.isRunning:
         game.update()
         game.handle_event()

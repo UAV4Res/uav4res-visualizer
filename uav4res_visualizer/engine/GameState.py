@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from .Window import Window 
 
 
 # Abstract class for a game state
@@ -14,7 +15,7 @@ class GameState(ABC):
         pass
 
     @abstractmethod
-    def render(self):
+    def render(self, window: Window):
         """Render the game state."""
         pass
 

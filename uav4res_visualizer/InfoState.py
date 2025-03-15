@@ -1,17 +1,18 @@
 import pygame
-from GameState import GameState
-from GameStateManager import GameStateManager
-from InputManager import InputManager
-from TextManager import TextManager
-from TextureManager import TextureManager
-from Button import Button
+from .engine.GameState import GameState
+from .engine.GameStateManager import GameStateManager
+from .engine.InputManager import InputManager
+from .engine.TextManager import TextManager
+from .engine.TextureManager import TextureManager
+from .engine.Button import Button
+from .engine.Window import Window
 
 
 class InfoState(GameState):
     def __init__(self):
         self.buttons = []
 
-        from MenuState import MenuState
+        from .MenuState import MenuState
 
         button = Button(x=280, y=500, width=200, height=65)
         button.set_title("Back")
@@ -29,13 +30,11 @@ class InfoState(GameState):
         if InputManager().is_key_down(pygame.K_RETURN):
             GameStateManager().switch_state(PlayState())
 
-    def render(self):
-        from Game import Game
-
-        Game().window.fill("white")
+    def render(self, window: Window):
+        window.fill("white")
         TextManager().print(
             text="Fluffy (UET-VNU): UAV4Res",
-            position=(50 + Game().getWindow().width / 2, 80),
+            position=(50 + window.width / 2, 80),
             color="black",
             font_size=50,
         )
@@ -48,14 +47,14 @@ class InfoState(GameState):
 
         TextManager().print(
             text="Project from team Fluffy UET-VNU, Project from team Fluffy UET-VNU, Project from team Fluffy UET-VNU",
-            position=(Game().getWindow().width / 2, 300),
+            position=(window.width / 2, 300),
             color="black",
             font_size=30,
             max_width=500,
         )
 
         for button in self.buttons:
-            button.draw()
+            button.draw(window)
 
     def clean(self):
         pass

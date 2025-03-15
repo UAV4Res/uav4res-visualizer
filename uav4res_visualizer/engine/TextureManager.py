@@ -1,5 +1,6 @@
 import pygame
-from Singleton import Singleton
+from .Singleton import Singleton
+from .Window import Window
 
 
 @Singleton
@@ -45,9 +46,7 @@ class TextureManager:
         """
         return self.textures.get(name, None)
 
-    def draw_texture(self, name, position, rotation=0, scale=None):
-        from Game import Game
-
+    def draw_texture(self, window: Window, name, position, rotation=0, scale=None):
         """
         Draw a texture to the screen.
 
@@ -73,7 +72,7 @@ class TextureManager:
 
         # Draw the texture
         rect = texture.get_rect(topleft=position)
-        Game().getWindow().draw_image(texture, rect)
+        window.draw_image(texture, rect)
 
     def unload_texture(self, name):
         """

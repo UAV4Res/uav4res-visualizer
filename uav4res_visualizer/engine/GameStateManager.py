@@ -1,4 +1,5 @@
-from Singleton import Singleton
+from .Singleton import Singleton
+from .Window import Window
 
 
 @Singleton
@@ -31,10 +32,10 @@ class GameStateManager:
         if self.states:
             self.states[-1].update()
 
-    def render(self):
+    def render(self, window: Window):
         """Render the current state."""
         if self.states:
-            self.states[-1].render()
+            self.states[-1].render(window)
 
     def clean(self):
         if self.states:

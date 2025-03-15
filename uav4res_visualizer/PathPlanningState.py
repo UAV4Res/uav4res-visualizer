@@ -1,10 +1,13 @@
 import pygame
-from GameState import GameState
-from GameStateManager import GameStateManager
-from InputManager import InputManager
-from TextManager import TextManager
-from Button import Button
-from path_planning_visualizer import main
+import os
+from .engine.GameState import GameState
+from .engine.GameStateManager import GameStateManager
+from .engine.InputManager import InputManager
+from .engine.TextManager import TextManager
+from .engine.Button import Button
+from .engine.Window import Window
+from . import PathPlanningSubProcess
+from .config import ASSETS_DIR, IMAGE_DIR
 import json
 
 
@@ -19,7 +22,7 @@ class PathPlanningState(GameState):
         back_button.set_border(2)
         self.buttons.append(back_button)
 
-        with open("./template.txt", "r") as file:
+        with open(os.path.join(ASSETS_DIR, "template.txt"), "r") as file:
             s = file.read()
         templates = json.loads(s)
 
@@ -45,8 +48,8 @@ class PathPlanningState(GameState):
             button.set_border(2)
 
             def create_on_click(info):
-                return lambda: main.run(
-                    image_link="map1.jpeg",
+                return lambda: PathPlanningSubProcess.run(
+                    image_link=os.path.join(IMAGE_DIR, "map1.jpeg"),
                     victim_position=info["victim_positions"],
                     fatals=info["fatals"],
                     victim_needs=info["victim_needs"],
@@ -63,24 +66,23 @@ class PathPlanningState(GameState):
             button.update()
 
     def handle_events(self):
-        from PlayState import PlayState
+        from .PlayState import PlayState
 
         if InputManager().is_key_down(pygame.K_RETURN):
             GameStateManager().switch_state(PlayState())
 
-    def render(self):
-        from Game import Game
-
-        Game().window.fill("white")
+    def render(self, window: Window):
+        window.fill("white")
         TextManager().print(
+            window=window,
             text="UAV4Res: Path Planning Visualizer",
-            position=(Game().getWindow().width / 2, 100),
+            position=(window.width / 2, 100),
             color="black",
             font_size=50,
         )
 
         for button in self.buttons:
-            button.draw()
+            button.draw(window)
 
     def clean(self):
         pass

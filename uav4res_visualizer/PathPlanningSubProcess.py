@@ -1,13 +1,11 @@
 import pygame
-from pygame.locals import *
 import numpy
 import cv2
 from PIL import Image
-import path_planning_visualizer.helper as helper
+from . import helper
 from multiprocessing import Process, Queue
 import time
 import sys
-import matplotlib.pyplot as plt
 
 #WIDTH, HEIGHT = 1280, 720
 WIDTH, HEIGHT = 640, 480
@@ -31,7 +29,7 @@ WIDTH, HEIGHT = 640, 480
 
 scale = 1.5
 
-class Gui():
+class PathPlanningSubProcess():
     def __init__(self, image_link, victim_position, fatals, victim_needs, rescue_position, rescue_resources, assembly_area):
         self.screen = pygame.display.set_mode((WIDTH * scale, HEIGHT * scale))
         pygame.display.set_caption("Visualize");
@@ -282,7 +280,7 @@ def main_loop(queue, image_link, victim_position, fatals, victim_needs, rescue_p
     algo_thres = Process(target=algo, args=(queue, ), daemon=True);
     algo_thres.start()
     
-    gui = Gui(image_link, victim_position, fatals, victim_needs, rescue_position, rescue_resources, assembly_area)
+    gui = PathPlanningSubProcess(image_link, victim_position, fatals, victim_needs, rescue_position, rescue_resources, assembly_area)
     
     while True:
         #print("->")
@@ -381,8 +379,7 @@ def run(image_link, victim_position, fatals, victim_needs, rescue_position, resc
             assembly_area: Position of the area which the rescue team must bring to when there are no space left in the boat: 1d list, shape (position)
     """
     queue = Queue()
-    main_loop_thread = Process(target=main_loop, args=(queue, image_link, victim_position, fatals, victim_needs, rescue_position, rescue_resources, [assembly_area]));
-    main_loop_thread.start()
+    main_loop(queue, image_link, victim_position, fatals, victim_needs, rescue_position, rescue_resources, [assembly_area])
 
 #if __name__ == '__main__':
     # fatals = [7, 5, 9, 5, 1]
