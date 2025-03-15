@@ -7,6 +7,8 @@ uav4res_visualizer
 ```
 ## Run with sourcecode
 ```
+git clone https://github.com/UAV4Res/uav4res-visualizer
+cd uav4res_visualizer
 python -m uav4res_visualizer
 ```
 
