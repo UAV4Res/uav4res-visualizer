@@ -84,6 +84,8 @@ class Button:
 
         self.is_hovered = InputManager().is_mouse_inside_rectangle(self.rect)
         self.is_clicked = self.is_hovered and InputManager().is_mouse_down(1)
+
+    def handle_events(self):
         if self.is_clicked:
             if self.callback:
                 self.callback()

@@ -4,7 +4,6 @@ import os
 import numpy as np
 from .engine.GameState import GameState
 from .engine.GameStateManager import GameStateManager
-from .engine.InputManager import InputManager
 from .engine.TextManager import TextManager
 from .engine.Button import Button
 from .engine.TextureManager import TextureManager
@@ -73,10 +72,8 @@ class MapBuildingState(GameState):
             button.update()
 
     def handle_events(self):
-        from .PlayState import PlayState
-
-        if InputManager().is_key_down(pygame.K_RETURN):
-            GameStateManager().switch_state(PlayState())
+        for button in self.buttons:
+            button.handle_events()
 
     def render(self, window: Window):
         window.fill("white")
@@ -113,7 +110,10 @@ class MapBuildingState(GameState):
                 cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
             )
             window.draw_image(
-                texture=original_surface, position=(100, 200), scale=(200, 200), rotation=-90
+                texture=original_surface,
+                position=(100, 200),
+                scale=(200, 200),
+                rotation=-90,
             )  # Adjust position as needed
 
         # Render processed map if available
@@ -122,7 +122,10 @@ class MapBuildingState(GameState):
                 cv2.cvtColor(self.result_image, cv2.COLOR_GRAY2RGB)
             )
             window.draw_image(
-                texture=result_surface, position=(500, 200), scale=(200, 200), rotation=-90
+                texture=result_surface,
+                position=(500, 200),
+                scale=(200, 200),
+                rotation=-90,
             )  # Adjust position as needed
 
     def clean(self):

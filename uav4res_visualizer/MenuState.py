@@ -23,7 +23,8 @@ class MenuState(GameState):
             button.update()
 
     def handle_events(self):
-        pass
+        for button in self.buttons:
+            button.handle_events()
 
     def render(self, window: Window):
         window.fill("white")

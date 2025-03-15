@@ -25,10 +25,8 @@ class InfoState(GameState):
             button.update()
 
     def handle_events(self):
-        from PlayState import PlayState
-
-        if InputManager().is_key_down(pygame.K_RETURN):
-            GameStateManager().switch_state(PlayState())
+        for button in self.buttons:
+            button.handle_events()
 
     def render(self, window: Window):
         window.fill("white")
