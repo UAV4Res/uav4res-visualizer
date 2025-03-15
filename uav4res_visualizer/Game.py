@@ -11,7 +11,7 @@ from .engine.TextureManager import TextureManager
 
 @Singleton
 class Game:
-    def __init__(self, width, height, fps):
+    def __init__(self, width: int, height: int, fps: int):
         pygame.init()
         self.isRunning = True
         self.FPS = fps

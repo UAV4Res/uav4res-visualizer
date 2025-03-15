@@ -1,10 +1,9 @@
-import pygame
+from pygame import Rect
 from typing import Callable, Optional
-from .Rectangle import Rectangle
 from .InputManager import InputManager
 from .TextManager import TextManager
 from .TextureManager import TextureManager
-from .Window import Window 
+from .Window import Window
 
 
 class Button:
@@ -19,7 +18,7 @@ class Button:
         font_color=(0, 0, 0),
         disable_color=(183, 183, 183),
     ):
-        self.rectangle = Rectangle(x, y, width, height)
+        self.rect = Rect(x, y, width, height)
         self.callback: Optional[Callable[[], None]] = None
         self.is_disabled = False
         self.border = 0
@@ -45,6 +44,7 @@ class Button:
         self.background_texture_id = texture_id
 
     def draw(self, window: Window):
+        # Determine the button color
         if self.is_disabled:
             color = self.disabled_color
         elif self.is_hovered:
@@ -52,14 +52,9 @@ class Button:
         else:
             color = self.normal_color
 
-        window.draw_box_with_radius(
+        window.draw_rect(
             color=color,
-            rect=pygame.Rect(
-                self.rectangle.x(),
-                self.rectangle.y(),
-                self.rectangle.w(),
-                self.rectangle.h(),
-            ),
+            rect=self.rect,
             radius=self.border_radius,
             border=self.border,
         )
@@ -67,17 +62,14 @@ class Button:
         if self.background_texture_id:
             TextureManager().draw_texture(
                 name=self.background_texture_id,
-                position=(self.rectangle.x(), self.rectangle.y()),
-                scale=(self.rectangle.w(), self.rectangle.h()),
+                position=(self.rect.centerx, self.rect.centery),
+                scale=(self.rect.weight, self.rect.height),
             )
 
         TextManager().print(
-            window = window,
+            window=window,
             text=self.title,
-            position=(
-                self.rectangle.x() + self.rectangle.w() // 2,
-                self.rectangle.y() + self.rectangle.h() // 2,
-            ),
+            position=(self.rect.centerx, self.rect.centery),
             color=self.font_color,
             font_size=self.font_size,
         )
@@ -90,7 +82,7 @@ class Button:
         self.is_hovered = False
         self.is_clicked = False
 
-        self.is_hovered = InputManager().is_mouse_inside_rectangle(self.rectangle)
+        self.is_hovered = InputManager().is_mouse_inside_rectangle(self.rect)
         self.is_clicked = self.is_hovered and InputManager().is_mouse_down(1)
         if self.is_clicked:
             if self.callback:

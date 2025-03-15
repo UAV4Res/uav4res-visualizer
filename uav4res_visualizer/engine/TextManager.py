@@ -18,9 +18,9 @@ class TextManager:
 
     def print(
         self,
+        window: Window,
         text: str,
         position,
-        window: Window,
         font_path=None,
         font_size=24,
         color=(255, 255, 255),
@@ -37,8 +37,11 @@ class TextManager:
             max_width (int): Maximum width for text wrapping (optional).
         """
         try:
+            # Scale font size based on zoom factor
+            font_size = int(font_size * window.zoom_factor)
             font = self.get_font(font_path, font_size)
 
+            # Split text into lines if max_width is provided
             lines = []
             if max_width:
                 words = text.split(" ")

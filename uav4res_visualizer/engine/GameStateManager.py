@@ -1,11 +1,11 @@
+from collections import deque
 from .Singleton import Singleton
-from .Window import Window
 
 
 @Singleton
 class GameStateManager:
     def __init__(self):
-        self.states = []  # Stack of states
+        self.states = deque()  # Use deque for faster stack operations
 
     def push_state(self, state):
         """Push a new state onto the stack."""
@@ -19,24 +19,29 @@ class GameStateManager:
     def switch_state(self, state):
         """Replace the current state with a new one."""
         if self.states:
-            self.pop_state()
-        self.push_state(state)
+            self.states.pop()
+        self.states.append(state)
 
     def handle_events(self):
         """Forward events to the current state."""
         if self.states:
-            self.states[-1].handle_events()
+            current_state = self.states[-1]  # Store the reference
+            current_state.handle_events()
 
     def update(self):
         """Update the current state."""
         if self.states:
-            self.states[-1].update()
+            current_state = self.states[-1]  # Store the reference
+            current_state.update()
 
-    def render(self, window: Window):
+    def render(self):
         """Render the current state."""
         if self.states:
-            self.states[-1].render(window)
+            current_state = self.states[-1]  # Store the reference
+            current_state.render()
 
     def clean(self):
+        """Clean up the current state."""
         if self.states:
-            self.states[-1].clean()
+            current_state = self.states[-1]  # Store the reference
+            current_state.clean()

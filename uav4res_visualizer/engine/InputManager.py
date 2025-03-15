@@ -1,6 +1,6 @@
 import pygame
 from .Singleton import Singleton
-from .Rectangle import Rectangle
+from pygame import Rect
 
 
 @Singleton
@@ -23,7 +23,6 @@ class InputManager:
         self.mouse_up.clear()
 
         for event in pygame.event.get():
-            # Process events
             if event.type == pygame.QUIT:
                 self.quit = True
             elif event.type == pygame.KEYDOWN:
@@ -59,13 +58,8 @@ class InputManager:
     def is_mouse_held(self, button):
         return button in self.mouse_held
 
-    def is_mouse_inside_rectangle(self, rectangle: Rectangle):
-        mouse_x, mouse_y = self.mouse_pos
-
-        return (
-            rectangle.leftmost() <= mouse_x <= rectangle.rightmost()
-            and rectangle.top() <= mouse_y <= rectangle.bottom()
-        )
+    def is_mouse_inside_rectangle(self, rectangle: Rect):
+        return rectangle.collidepoint(self.mouse_pos)
 
     def is_quit(self):
         return self.quit
