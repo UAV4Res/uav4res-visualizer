@@ -1,23 +1,13 @@
-# Code structure
-The source code contain mainly in ```uav4res``` folder, python file outside ```path_planning_visualizer``` folder contain codes to initialize interface of the application. We use pygame to draw interface. The main algorithm is put inside ```path_planning_visualizer``` folder:
-+ ```path_planning_visualizer/main.py```: This file visulize the finding process
-+ ```path_planning_visualizer/helper.py```: This file contain the algorithm to find the path for each rescue team and other helper function.
-
-# Setup use Poetry 
-Make sure you have installed Poetry 
-
+# UAV4Res Visualizer
+ 
+## Install with PIP
 ```
-pip install poetry
+pip install uav4res-visualizer
+uav4res_visualizer
 ```
-Then, run the following commands:
+## Run with sourcecode
 ```
-git clone https://github.com/UAV4Res/uav4res-visualizer
-cd uav4res-visualizer
-poetry install
-```
-# Run
-```
-python uav4res/main.py
+python -m uav4res_visualizer
 ```
 
 # Reference
