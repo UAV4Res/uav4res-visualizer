@@ -1,5 +1,6 @@
 from collections import deque
 from .Singleton import Singleton
+from .Window import Window
 
 
 @Singleton
@@ -34,11 +35,11 @@ class GameStateManager:
             current_state = self.states[-1]  # Store the reference
             current_state.update()
 
-    def render(self):
+    def render(self, window: Window):
         """Render the current state."""
         if self.states:
             current_state = self.states[-1]  # Store the reference
-            current_state.render()
+            current_state.render(window)
 
     def clean(self):
         """Clean up the current state."""
